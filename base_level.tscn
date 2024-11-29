@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://o3f783ule25h"]
+[gd_scene load_steps=10 format=3 uid="uid://o3f783ule25h"]
 
 [ext_resource type="MeshLibrary" uid="uid://d3xv6n6ejjrb0" path="res://mesh_libs/SpaceLibrary.tres" id="1_7gj5o"]
+[ext_resource type="PackedScene" uid="uid://birt2gxpv0uxu" path="res://ray_picker_camera/ray_picker_camera.tscn" id="1_g5viq"]
 [ext_resource type="PackedScene" uid="uid://creme711erfih" path="res://enemy/enemy.tscn" id="2_w78v8"]
 [ext_resource type="PackedScene" uid="uid://87l0q1hoeafb" path="res://base/base.tscn" id="3_llol0"]
 
@@ -36,8 +37,8 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_hqo40")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, -5, 19, -5)
+[node name="RayPickerCamera" parent="." node_paths=PackedStringArray("gridMap") instance=ExtResource("1_g5viq")]
+gridMap = NodePath("../GridMap")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
@@ -98,7 +99,7 @@ path_joined = false
 transform = Transform3D(-4.37111e-08, 0, -0.999993, 0, 1, 0, 0.999993, 0, -4.37111e-08, -26, 0, -6)
 
 [node name="Enemy2" parent="Path3D" instance=ExtResource("2_w78v8")]
-transform = Transform3D(-0.0240077, 0, -0.999705, 0, 1, 0, 0.999705, 0, -0.0240077, -21.0018, 0, -5.87097)
+transform = Transform3D(-0.0240078, 0, -0.999705, 0, 1, 0, 0.999705, 0, -0.0240078, -21.0018, 0, -5.87097)
 progress = 5.0
 
 [node name="Enemy3" parent="Path3D" instance=ExtResource("2_w78v8")]
