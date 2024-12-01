@@ -1,0 +1,121 @@
+[gd_scene load_steps=13 format=3 uid="uid://frdmf6ps2p7j"]
+
+[ext_resource type="Material" uid="uid://bx2borqxca1xl" path="res://turret/metal_1.tres" id="1_idvff"]
+[ext_resource type="Script" path="res://turret/turret.gd" id="1_nojrq"]
+[ext_resource type="Material" uid="uid://bknv3anmeme8p" path="res://turret/red_metal.tres" id="2_8y7qu"]
+[ext_resource type="Material" uid="uid://dmdpr27s7ej84" path="res://turret/metal_2.tres" id="3_jwytf"]
+[ext_resource type="PackedScene" uid="uid://cqw3yec8n2k5j" path="res://turret/projectile.tscn" id="4_4hvlk"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_xl3nv"]
+material = ExtResource("1_idvff")
+height = 1.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_8btsc"]
+material = ExtResource("1_idvff")
+top_radius = 0.6
+bottom_radius = 0.6
+height = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pf6dd"]
+material = ExtResource("2_8y7qu")
+top_radius = 0.2
+bottom_radius = 0.2
+height = 0.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_v8jq7"]
+material = ExtResource("3_jwytf")
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.3
+
+[sub_resource type="Animation" id="Animation_8w3db"]
+resource_name = "Fire"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Base/Top/OuterCannon/InnerCannon:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.2, 0), Vector3(0, 0, 0), Vector3(0, 0.2, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Base/Top/OuterCannon:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0.65), Vector3(0, 0, 0.6), Vector3(0, 0, 0.65)]
+}
+
+[sub_resource type="Animation" id="Animation_bx4mn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Base/Top/OuterCannon/InnerCannon:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.2, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Base/Top/OuterCannon:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0.65)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fw21u"]
+_data = {
+"Fire": SubResource("Animation_8w3db"),
+"RESET": SubResource("Animation_bx4mn")
+}
+
+[node name="Turret" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.81741e-05, -0.00319964, 0.00168252)
+script = ExtResource("1_nojrq")
+projectile = ExtResource("4_4hvlk")
+
+[node name="Base" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("CylinderMesh_xl3nv")
+
+[node name="Top" type="MeshInstance3D" parent="Base"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("CylinderMesh_8btsc")
+
+[node name="OuterCannon" type="MeshInstance3D" parent="Base/Top"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.65)
+mesh = SubResource("CylinderMesh_pf6dd")
+
+[node name="InnerCannon" type="MeshInstance3D" parent="Base/Top/OuterCannon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("CylinderMesh_v8jq7")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_fw21u")
+}
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
