@@ -3,7 +3,8 @@ extends Node3D
 @export var projectile: PackedScene
 @export var range: float = 10
 
-@onready var inner_cannon: MeshInstance3D = $Base/Top/OuterCannon/InnerCannon
+@onready var cannon: Node3D = $Cannon
+@onready var turret_base: Node3D = $TurretBase
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var enemy_path: Path3D
@@ -13,7 +14,7 @@ func _physics_process(delta: float) -> void:
   cur_enemy = find_target()
 
   if cur_enemy:
-    look_at(cur_enemy.global_position, Vector3.UP, true)
+    cannon.look_at(cur_enemy.global_position, Vector3.UP, true)
 
 func _on_timer_timeout() -> void:
   if not cur_enemy:
@@ -21,8 +22,8 @@ func _on_timer_timeout() -> void:
 
   var shot = projectile.instantiate()
 
-  shot.global_position = inner_cannon.global_position
-  shot.direction = global_transform.basis.z
+  shot.global_position = cannon.global_position
+  shot.direction = Vector3(cannon.global_transform.basis.z.x, -0.1, cannon.global_transform.basis.z.z)
 
   add_child(shot)
 

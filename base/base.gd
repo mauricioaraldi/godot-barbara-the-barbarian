@@ -1,8 +1,10 @@
 extends Node3D
 
-var threshold_health_danger: float = 5
+@export var max_health: float = 5
+@onready var label_3d: Label3D = $Label3D
 
-@export var health: float = 5:
+var threshold_health_danger: float = 5
+var health: float = 0:
   set(health_in):
     health = health_in
     label_3d.text = str(health_in)
@@ -11,10 +13,9 @@ var threshold_health_danger: float = 5
     if health_in < 1:
       get_tree().reload_current_scene()
 
-@onready var label_3d: Label3D = $Label3D
 
 func _ready() -> void:
-  label_3d.text = str(health)
+  health = max_health
 
 func take_damage() -> void:
   health -= 1;

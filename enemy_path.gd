@@ -2,6 +2,7 @@ extends Path3D
 
 @export var enemy_scene: PackedScene
 @export var difficulty_manager: Node
+@export var victory_layer: CanvasLayer
 
 @onready var timer: Timer = $Timer
 
@@ -30,4 +31,4 @@ func enemy_defeated() -> void:
       if child is PathFollow3D:
         return
 
-    print("You won")
+    victory_layer.victory()
